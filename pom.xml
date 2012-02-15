@@ -1,24 +1,58 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-
 	<parent>
-	   	<groupId>org.jvnet.hudson.plugins</groupId>
-	    	<artifactId>plugin</artifactId>
-	    	<version>1.326</version><!-- which version of Hudson is this plugin built against? -->
-	    	<relativePath>../pom.xml</relativePath>
+		<groupId>org.jvnet.hudson.plugins</groupId>
+		<artifactId>hudson-plugin-parent</artifactId>
+		<!-- The version of hudson platform -->
+		<version>2.1.0</version>
 	</parent>
-
 	<artifactId>xfpanel</artifactId>
 	<packaging>hpi</packaging>
 	<name>eXtreme Feedback Panel</name>
-	<version>1.0.10-SNAPSHOT</version>
+	<version>1.0.9</version>
 	<description>Provides an eXtreme Feedback Panel for Hudson. Thanks to Mark Howard and his work on the Radiator View Plugin from which this was based.</description>
 	<url>http://wiki.hudson-ci.org/display/HUDSON/eXtreme+Feedback+Panel+Plugin</url>
 	<developers>
-    		<developer>
-      			<id>jrenaut</id>
-      			<name>Julien RENAUT</name>
-      			<email>julienrenaut@gmail.com</email>
-    		</developer>
-  	</developers>
+		<developer>
+			<id>nmahle</id>
+			<name>Niko Mahle</name>
+			<email>niko.mahle@googlemail.com</email>
+		</developer>
+		<developer>
+			<id>jrenaut</id>
+			<name>Julien RENAUT</name>
+			<email>julienrenaut@gmail.com</email>
+		</developer>
+	</developers>
+	<scm>
+		<connection>scm:git:ssh://github.com/hudson-plugins/extreme-feedback-panel-plugin.git</connection>
+		<developerConnection>scm:git:ssh://github.com/hudson-plugins/extreme-feedback-panel-plugin.git</developerConnection>
+		<url>https://github.com/hudson-plugins/extreme-feedback-panel-plugin</url>
+	</scm>
+	<distributionManagement>
+		<snapshotRepository>
+			<id>sonatype-nexus-snapshots</id>
+			<name>Sonatype Nexus Snapshots</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>sonatype-nexus-staging</id>
+			<name>Nexus Release Repository</name>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.1</version>
+				<configuration>
+					<mavenExecutorId>forked-path</mavenExecutorId>
+					<goals>deploy</goals>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
