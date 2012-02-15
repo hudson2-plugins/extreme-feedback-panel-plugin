@@ -360,17 +360,23 @@ public class XFPanelView extends ListView {
 		 */
 		public String getCulprit() {
 			Run<?, ?> run = this.job.getLastBuild();
+			StringBuffer culprits = new StringBuffer();
 			String culprit = " - ";
 			if (run instanceof AbstractBuild<?, ?>) {
 				AbstractBuild<?, ?> build = (AbstractBuild<?, ?>) run;
 				Iterator<User> it = build.getCulprits().iterator();
 				while (it.hasNext()) {
-					culprit = it.next().getFullName().toUpperCase();
+					culprits.append(it.next().getFullName().toUpperCase());
+					if (it.hasNext()) {
+						culprits.append(", ");
+					}
+				}
+				if (culprits.length() > 0) {
+					culprit = culprits.toString();
 				}
 			}
 			return culprit;
-		}
-		
+		}		
 		/**
 		 * @return color to be used to show the test diff
 		 */
