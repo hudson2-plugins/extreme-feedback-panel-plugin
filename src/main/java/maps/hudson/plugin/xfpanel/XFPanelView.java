@@ -8,6 +8,7 @@ import hudson.model.Descriptor.FormException;
 import hudson.tasks.test.AbstractTestResultAction;
 import hudson.util.FormValidation;
 
+import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -157,7 +158,12 @@ public class XFPanelView extends ListView {
 	@Override
 	protected void submit(StaplerRequest req) throws ServletException,
 			FormException {
-		super.submit(req);
+		try {
+			super.submit(req);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
 		try {
 			this.numColumns = Integer.parseInt(req.getParameter("numColumns"));
