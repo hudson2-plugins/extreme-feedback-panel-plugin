@@ -44,6 +44,8 @@ public class XFPanelView extends ListView {
 
 	private Boolean showDescription = false;
 
+	private Boolean showBrokenBuildCount = false;
+
 	private Boolean showZeroTestCounts = true;
 
 	private Boolean sortDescending = false;
@@ -85,6 +87,13 @@ public class XFPanelView extends ListView {
 			this.showDescription = false;
 		}
 		return this.showDescription;
+	}
+
+	public Boolean getShowBrokenBuildCount() {
+		if (this.showBrokenBuildCount == null) {
+			this.showBrokenBuildCount = false;
+		}
+		return this.showBrokenBuildCount;
 	}
 
 	public Boolean getSortDescending() {
@@ -157,13 +166,8 @@ public class XFPanelView extends ListView {
 	 */
 	@Override
 	protected void submit(StaplerRequest req) throws ServletException,
-			FormException {
-		try {
-			super.submit(req);
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+			FormException, IOException {
+		super.submit(req);
 
 		try {
 			this.numColumns = Integer.parseInt(req.getParameter("numColumns"));
@@ -181,6 +185,8 @@ public class XFPanelView extends ListView {
 		this.fullHD = Boolean.parseBoolean(req.getParameter("fullHD"));
 		this.showDescription = Boolean.parseBoolean(req
 				.getParameter("showDescription"));
+		this.showBrokenBuildCount = Boolean.parseBoolean(req
+				.getParameter("showBrokenBuildCount"));
 		this.sortDescending = Boolean.parseBoolean(req
 				.getParameter("sortDescending"));
 		this.showZeroTestCounts = Boolean.parseBoolean(req
@@ -345,6 +351,18 @@ public class XFPanelView extends ListView {
 		}
 
 		/**
+		 * @return number of failed builds since last successful build
+		 */
+		public int getNumberOfFailedBuilds() {
+			int lastSuccessfulNumber;
+			lastSuccessfulNumber = this.job.getLastSuccessfulBuild()
+					.getNumber();
+			int lastNumber = this.job.getLastBuild().getNumber();
+			int numberOfFailedBuilds = lastNumber - lastSuccessfulNumber;
+			return numberOfFailedBuilds;
+		}
+
+		/**
 		 * @return difference between this job's last build successful tests and
 		 *         the previous'
 		 */
@@ -386,10 +404,10 @@ public class XFPanelView extends ListView {
 		}
 
 		/**
-		 * Elects a culprit/responsible for a broken build by choosing the last
-		 * commiter of a given build
+		 * Elects a culprit/responsible for a broken build by choosing all possible
+		 * commiters of a given build
 		 * 
-		 * @return the culprit/responsible
+		 * @return the culprits/responsibles
 		 */
 		public String getCulprit() {
 			Run<?, ?> run = this.job.getLastBuild();
