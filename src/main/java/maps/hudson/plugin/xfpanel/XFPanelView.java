@@ -352,6 +352,7 @@ public class XFPanelView extends ListView {
 
 		/**
 		 * @return number of failed builds since last successful build
+		 * @author Niko Mahle
 		 */
 		public int getNumberOfFailedBuilds() {
 			int lastSuccessfulNumber;
@@ -408,6 +409,7 @@ public class XFPanelView extends ListView {
 		 * commiters of a given build
 		 * 
 		 * @return the culprits/responsibles
+		 * @author Niko Mahle
 		 */
 		public String getCulprit() {
 			Run<?, ?> run = this.job.getLastBuild();
