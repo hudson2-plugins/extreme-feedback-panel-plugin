@@ -361,6 +361,7 @@ public class XFPanelView extends ListView {
 			int lastNumber = this.job.getLastCompletedBuild().getNumber();
 			int numberOfFailedBuilds = lastNumber - lastSuccessfulNumber;
 			return numberOfFailedBuilds;
+			
 		}
 
 		/**
