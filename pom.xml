@@ -25,6 +25,9 @@
 		</developer>
 	</developers>
 	<scm>
+		<connection>scm:git:ssh://github.com/hudson-plugins/extreme-feedback-panel-plugin.git</connection>
+		<developerConnection>scm:git:ssh://github.com/hudson-plugins/extreme-feedback-panel-plugin.git</developerConnection>
+		<url>https://github.com/hudson-plugins/extreme-feedback-panel-plugin</url>
 	</scm>
 	<distributionManagement>
 		<snapshotRepository>
