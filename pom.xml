@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.jvnet.hudson.plugins</groupId>
@@ -9,7 +10,7 @@
 	<artifactId>xfpanel</artifactId>
 	<packaging>hpi</packaging>
 	<name>eXtreme Feedback Panel</name>
-	<version>1.0.15-SNAPSHOT</version>
+	<version>1.0.14-SNAPSHOT</version>
 	<description>Provides an eXtreme Feedback Panel for Hudson. Thanks to Mark Howard and his work on the Radiator View Plugin from which this was based.</description>
 	<url>http://wiki.hudson-ci.org/display/HUDSON/eXtreme+Feedback+Panel+Plugin</url>
 	<developers>
@@ -50,6 +51,14 @@
 				<configuration>
 					<mavenExecutorId>forked-path</mavenExecutorId>
 					<goals>deploy</goals>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-scm-plugin</artifactId>
+				<version>1.7</version>
+				<configuration>
+					<connectionType>connection</connectionType>
 				</configuration>
 			</plugin>
 		</plugins>
