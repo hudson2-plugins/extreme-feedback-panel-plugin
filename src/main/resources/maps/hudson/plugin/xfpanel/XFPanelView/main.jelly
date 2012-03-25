@@ -15,10 +15,18 @@
 			<div class="dashboard"
 				style="overflow: visible; left: 0px; top: 34px; position: absolute; height: 100%; z-index: 9999; width: 100%; background-color: white; text-align: center;">
 
-				<j:invoke var="jobs" on="${from}" method="sort">
-					<j:arg type="java.util.Collection" value="${items}" />
-				</j:invoke>
-
+				<j:choose>
+					<j:when test="${from.failedBuildsBelow == true}">
+						<j:invoke var="jobs" on="${from}" method="sortFailedBuildsBelow">
+							<j:arg type="java.util.Collection" value="${items}" />
+						</j:invoke>
+					</j:when>
+				<j:otherwise>
+						<j:invoke var="jobs" on="${from}" method="sort">
+							<j:arg type="java.util.Collection" value="${items}" />
+						</j:invoke>
+				</j:otherwise>
+				</j:choose>
 				<j:choose>
 					<j:when test="${from.numColumns == 1}">
 						<j:set var="width" value="99%" />

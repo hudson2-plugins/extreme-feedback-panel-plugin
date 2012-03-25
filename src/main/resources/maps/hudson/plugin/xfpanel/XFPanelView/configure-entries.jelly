@@ -43,8 +43,16 @@
 		<f:checkbox name="sortDescending" checked="${it.sortDescending}" value="true" field="sortDescending" />
 	</f:entry>
 
+	<f:entry title="${%Sort Jobs with successful builds before failed builds}" field="failedBuildsBelow">
+		<f:checkbox name="failedBuildsBelow" checked="${it.failedBuildsBelow}" value="true" field="failedBuildsBelow" />
+	</f:entry>
+	
 	<f:entry title="${%Show number of failed builds since last successful build}" field="showBrokenBuildCount">
 		<f:checkbox name="showBrokenBuildCount" checked="${it.showBrokenBuildCount}" value="true" field="showBrokenBuildCount" />
+	</f:entry>
+	
+	<f:entry title="${%Use green color for successful build}" field="greenColors">
+		<f:checkbox name="greenColors" checked="${it.greenColors}" value="true" field="greenColors" />
 	</f:entry>
 		
 </j:jelly>

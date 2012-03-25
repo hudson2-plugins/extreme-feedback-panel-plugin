@@ -50,6 +50,10 @@ public class XFPanelView extends ListView {
 
 	private Boolean sortDescending = false;
 
+	private Boolean failedBuildsBelow = false;
+
+	private Boolean greenColors = false;
+
 	private transient List<XFPanelEntry> entries;
 
 	private transient Map<hudson.model.Queue.Item, Integer> placeInQueue = new HashMap<hudson.model.Queue.Item, Integer>();
@@ -72,10 +76,15 @@ public class XFPanelView extends ListView {
 	 * @return the colors to use
 	 */
 	public XFColors getColors() {
-		if (this.colors == null) {
+		if (getgreenColors() == true) {
+			this.colors = XFColors.GREEN;
+			//System.out.println("colors green");
+			return this.colors;
+		} else {
 			this.colors = XFColors.DEFAULT;
+			//System.out.println("colors default");
+			return this.colors;
 		}
-		return this.colors;
 	}
 
 	public Boolean getFullHD() {
@@ -101,6 +110,20 @@ public class XFPanelView extends ListView {
 			this.sortDescending = false;
 		}
 		return this.sortDescending;
+	}
+
+	public Boolean getfailedBuildsBelow() {
+		if (this.failedBuildsBelow == null) {
+			this.failedBuildsBelow = false;
+		}
+		return this.failedBuildsBelow;
+	}
+
+	public Boolean getgreenColors() {
+		if (this.greenColors == null) {
+			this.greenColors = false;
+		}
+		return this.greenColors;
 	}
 
 	public Boolean getShowZeroTestCounts() {
@@ -133,6 +156,49 @@ public class XFPanelView extends ListView {
 				Collections.reverse(ents);
 			}
 
+			this.entries = ents;
+			return this.entries;
+		}
+		return Collections.emptyList();
+	}
+
+	/**
+	 * @param jobs
+	 *            the selected jobs
+	 * @return the jobs list wrapped into {@link XFPanelEntry} instances
+	 */
+	public Collection<XFPanelEntry> sortFailedBuildsBelow(
+			Collection<Job<?, ?>> jobs) {
+		placeInQueue = new HashMap<hudson.model.Queue.Item, Integer>();
+		int j = 1;
+		for (hudson.model.Queue.Item i : Hudson.getInstance().getQueue()
+				.getItems()) {
+			placeInQueue.put(i, j++);
+		}
+
+		if (jobs != null) {
+			List<XFPanelEntry> ents = new ArrayList<XFPanelEntry>();
+			List<XFPanelEntry> entsS = new ArrayList<XFPanelEntry>();
+			List<XFPanelEntry> entsF = new ArrayList<XFPanelEntry>();
+			for (Job<?, ?> job : jobs) {
+
+				String result = job.getLastCompletedBuild().getResult()
+						.toString();
+				if (result == "SUCCESS") {
+					// System.out.println(job.getDisplayName());
+					entsS.add(new XFPanelEntry(job));
+				} else {
+					// System.out.println(job.getDisplayName());
+					entsF.add(new XFPanelEntry(job));
+				}
+
+			}
+			ents.addAll(entsS);
+			ents.addAll(entsF);
+
+			if (this.getSortDescending()) {
+				Collections.reverse(ents);
+			}
 			this.entries = ents;
 			return this.entries;
 		}
@@ -189,6 +255,10 @@ public class XFPanelView extends ListView {
 				.getParameter("showBrokenBuildCount"));
 		this.sortDescending = Boolean.parseBoolean(req
 				.getParameter("sortDescending"));
+		this.failedBuildsBelow = Boolean.parseBoolean(req
+				.getParameter("failedBuildsBelow"));
+		this.greenColors = Boolean
+				.parseBoolean(req.getParameter("greenColors"));
 		this.showZeroTestCounts = Boolean.parseBoolean(req
 				.getParameter("showZeroTestCounts"));
 	}
@@ -352,8 +422,8 @@ public class XFPanelView extends ListView {
 
 		/**
 		 * @return number of failed builds since last successful build
-		 * @author Niko Mahle 
-		 */ 
+		 * @author Niko Mahle
+		 */
 		public int getNumberOfFailedBuilds() {
 			int lastSuccessfulNumber;
 			lastSuccessfulNumber = this.job.getLastSuccessfulBuild()
@@ -361,7 +431,7 @@ public class XFPanelView extends ListView {
 			int lastNumber = this.job.getLastCompletedBuild().getNumber();
 			int numberOfFailedBuilds = lastNumber - lastSuccessfulNumber;
 			return numberOfFailedBuilds;
-			
+
 		}
 
 		/**
@@ -406,8 +476,8 @@ public class XFPanelView extends ListView {
 		}
 
 		/**
-		 * Elects a culprit/responsible for a broken build by choosing all possible
-		 * commiters of a given build
+		 * Elects a culprit/responsible for a broken build by choosing all
+		 * possible commiters of a given build
 		 * 
 		 * @return the culprits/responsibles
 		 * @author Niko Mahle
@@ -658,6 +728,16 @@ public class XFPanelView extends ListView {
 		public static final XFColors DEFAULT = new XFColors("#7E7EFF",
 				"#FFFFFF", "#FFC130", "#FFFFFF", "#FF0000", "#FFFFFF",
 				"#CCCCCC", "#FFFFFF");
+
+		/*
+		 * okBG , okFG , failedBG , failedFG , brokenBG , brokenFG , otherBG ,
+		 * otherFG FFFFFF = white FF0000 = red 7E7EFF = blue FFC130 = yellow
+		 * 215E21 = huntergreen #267526 = another green
+		 */
+		public static final XFColors GREEN = new XFColors("#267526", "#FFFFFF",
+				"#FFC130", "#FFFFFF", "#FF0000", "#FFFFFF", "#CCCCCC",
+				"#FFFFFF");
+
 	}
 
 }
